@@ -1,5 +1,6 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
 
 type Message = {
   role: "user" | "ai";
@@ -147,8 +148,52 @@ export default function Home() {
                   >
                     {m.role === "user" ? "N" : "AI"}
                   </div>
-                  <div className="flex-1 text-[#ececf1] leading-relaxed whitespace-pre-wrap">
-                    {m.text}
+                  <div className="flex-1 text-[#ececf1] leading-relaxed">
+                    <ReactMarkdown
+                      components={{
+                        code({ className, children, ...props }) {
+                          const isInline = !className;
+                          return isInline ? (
+                            <code className="bg-[#2a2a2e] px-1.5 py-0.5 rounded text-sm" {...props}>
+                              {children}
+                            </code>
+                          ) : (
+                            <code className="block bg-[#1e1e1e] p-4 rounded-lg overflow-x-auto text-sm font-mono my-2" {...props}>
+                              {children}
+                            </code>
+                          );
+                        },
+                        pre({ children }) {
+                          return <pre className="bg-[#1e1e1e] p-4 rounded-lg overflow-x-auto my-2">{children}</pre>;
+                        },
+                        ul({ children }) {
+                          return <ul className="list-disc list-inside my-2 space-y-1">{children}</ul>;
+                        },
+                        ol({ children }) {
+                          return <ol className="list-decimal list-inside my-2 space-y-1">{children}</ol>;
+                        },
+                        p({ children }) {
+                          return <p className="my-2">{children}</p>;
+                        },
+                        h1({ children }) {
+                          return <h1 className="text-xl font-bold my-3">{children}</h1>;
+                        },
+                        h2({ children }) {
+                          return <h2 className="text-lg font-bold my-2">{children}</h2>;
+                        },
+                        h3({ children }) {
+                          return <h3 className="text-base font-semibold my-2">{children}</h3>;
+                        },
+                        a({ href, children }) {
+                          return <a href={href} className="text-[#0fa37b] underline" target="_blank" rel="noopener noreferrer">{children}</a>;
+                        },
+                        blockquote({ children }) {
+                          return <blockquote className="border-l-4 border-[#0fa37b] pl-4 my-2 italic text-[#acacbe]">{children}</blockquote>;
+                        },
+                      }}
+                    >
+                      {m.text}
+                    </ReactMarkdown>
                   </div>
                 </div>
               ))}
