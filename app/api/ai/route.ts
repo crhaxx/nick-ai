@@ -21,7 +21,7 @@ export async function POST(req: Request) {
     // #endregion
 
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 120000);
+    const timeout = setTimeout(() => controller.abort(), 60000);
 
     const res = await fetch("http://localhost:11434/api/chat", {
       method: "POST",
@@ -29,7 +29,7 @@ export async function POST(req: Request) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "qwen3.5:latest",
+        model: "qwen2.5:1.5b",
         messages: [{ role: "user", content: prompt }],
         stream: true
       }),
